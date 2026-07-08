@@ -1,34 +1,37 @@
 <p align="center"><img src="fastlane/metadata/android/en-US/images/icon.png" width="150"></p>
-<h1 align="center"><b>Auxio</b></h1>
-<h4 align="center">A simple, rational music player for Android.</h4>
+<h1 align="center"><b>Auxio+</b></h1>
+<h4 align="center">A simple, rational music player for Android — with a few extras.</h4>
 <p align="center">
-    <a href="https://github.com/oxygencobalt/Auxio/releases/tag/v4.1.2">
-        <img alt="Latest Version" src="https://img.shields.io/static/v1?label=tag&message=v4.1.2&color=64B5F6&style=flat">
-    </a>
-    <a href="https://github.com/oxygencobalt/Auxio/releases/">
-        <img alt="Releases" src="https://img.shields.io/github/downloads/OxygenCobalt/Auxio/total.svg?color=4B95DE&style=flat">
-    </a>
     <a href="https://www.gnu.org/licenses/gpl-3.0">
         <img src="https://img.shields.io/badge/license-GPL%20v3-2B6DBE.svg?style=flat">
     </a>
     <img alt="Minimum SDK Version" src="https://img.shields.io/badge/API-24%2B-1450A8?style=flat">
 </p>
-<h4 align="center"><a href="/CHANGELOG.md">Changelog</a> | <a href="https://github.com/OxygenCobalt/Auxio/wiki">Wiki</a> | <a href="https://github.com/OxygenCobalt/Auxio#Donate">Donate</a></h4>
-<p align="center">
-    <a href="https://f-droid.org/app/org.oxycblt.auxio"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="250"></a>
-    <a href="https://accrescent.app/app/org.oxycblt.auxio">
-        <img alt="Get it on Accrescent" src="https://accrescent.app/badges/get-it-on.png" width="250">
-    </a>
-</p>
-<p align="center">
-    <a href="https://hosted.weblate.org/engage/auxio/"><img height=64 src="https://hosted.weblate.org/widgets/auxio/-/strings/287x66-grey.png" alt="Translation status" /></a>
-</p>
+
+> [!NOTE]
+> **This is a fork of [Auxio](https://github.com/OxygenCobalt/Auxio) by
+> [Alexander Capehart (OxygenCobalt)](https://github.com/OxygenCobalt).**
+> All credit for the player itself goes to the original author. This fork adds a few
+> features that are intentionally out of scope upstream (see
+> [Why Are These Features Missing?](https://github.com/OxygenCobalt/Auxio/wiki/Why-Are-These-Features-Missing%3F))
+> and is regularly synced with the upstream `dev` branch.
 
 ## About
 
-Auxio is a local music player with a fast, reliable UI/UX without the many useless features present in other music players. Built off of modern media playback libraries, Auxio has superior library support and listening quality compared to other apps that use outdated Android functionality. In short, **It plays music.**
+Auxio is a local music player with a fast, reliable UI/UX without the many useless features
+present in other music players. Built off of modern media playback libraries, Auxio has superior
+library support and listening quality compared to other apps that use outdated Android
+functionality. In short, **It plays music.**
 
-**The default branch is the development version of the repository. For a stable version, see the master branch.**
+## What this fork adds
+
+- **Sleep timer** — a timer button on the playback screen next to the equalizer:
+  - Radial dial to pick up to an hour, plus a field for any custom duration
+  - Remembers the last duration you used
+  - Silent notification with a live countdown (lock screen included) and a stop button
+  - Can be fully disabled in Settings → Personalize, restoring the stock toolbar
+
+Everything else — features, behavior, look and feel — matches upstream Auxio.
 
 ## Screenshots
 
@@ -40,7 +43,6 @@ Auxio is a local music player with a fast, reliable UI/UX without the many usele
     <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot4.png" width=250>
     <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot5.png" width=250>
 </p>
-
 
 ## Features
 
@@ -65,33 +67,14 @@ precise/original dates, sort tags, and more
 - Stylish widgets that automatically adapt to their size
 - Completely private and offline
 - No rounded album covers (if you want them)
+- Sleep timer *(fork addition)*
 
 ## Permissions
 
 - Storage (`READ_MEDIA_AUDIO`, `READ_EXTERNAL_STORAGE`) to read and play your music files
 - Services (`FOREGROUND_SERVICE`, `WAKE_LOCK`) to keep the music playing in the background
-- Notifications (`POST_NOTIFICATION`) to indicate ongoing playback and music loading
-
-## Donate
-
-You can support Auxio's development through [my Github Sponsors page](https://github.com/sponsors/OxygenCobalt). Get the ability to prioritize features and have your profile added to the README, Release Changelogs, and even the app itself!
-
-<h3 align="center">Legendary supporters:</h3>
-<p align="center">
-    <a href="https://github.com/bkkellyh"><img src="https://avatars.githubusercontent.com/u/248118457?v=4" width=250 /></a> 
-</p>
-<h3 align="center"><a href="https://github.com/bkkellyh">@bkkellyh</a> - <i>$500!</i></h3>
-
-<hr />
-
-<p align="center"><b>$8/month supporters:</b></p>
-
-<p align="center">
-    <a href="https://github.com/uku3lig"><img src="https://avatars.githubusercontent.com/u/61147779?v=4" width=50 /></a>
-</p>
-<p align="center">
-    And **1** Private Sponsor!
-</p>
+- Notifications (`POST_NOTIFICATION`) to indicate ongoing playback and music loading, and to
+show the sleep timer countdown
 
 ## Building
 
@@ -165,15 +148,23 @@ cd ~/Android/Sdk/platform-tools
 ./adb push ~Music/ /sdcard/Music
 ```
 
-## Contributing
+## Contributing & Issues
 
-Auxio accepts most contributions as long as they follow the [Contribution Guidelines](/.github/CONTRIBUTING.md).
+- Problems with **fork-specific features** (ex. the sleep timer): open an issue **in this
+repository**.
+- Problems with the **player itself** (playback, library, UI): report them
+[upstream](https://github.com/OxygenCobalt/Auxio/issues) — but please reproduce them on
+official Auxio first, so the original author isn't debugging this fork's changes.
+- **Translations** for the core app belong to the upstream
+[Weblate project](https://hosted.weblate.org/engage/auxio/).
 
-However, feature additions and major UI changes are less likely to be accepted. See
-[Why Are These Features Missing?](https://github.com/OxygenCobalt/Auxio/wiki/Why-Are-These-Features-Missing%3F)
-for more information.
+See the [Contribution Guidelines](/.github/CONTRIBUTING.md) for details.
 
+## Supporting the original author
 
+This fork exists thanks to OxygenCobalt's work. If you find the app useful, consider
+supporting Auxio's development through
+[their GitHub Sponsors page](https://github.com/sponsors/OxygenCobalt).
 
 ## License
 

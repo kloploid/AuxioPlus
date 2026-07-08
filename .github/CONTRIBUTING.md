@@ -1,46 +1,51 @@
-# Auxio contribution guidelines
+# Auxio+ contribution guidelines
+
+**This repository is a fork of [Auxio](https://github.com/OxygenCobalt/Auxio) by
+[OxygenCobalt](https://github.com/OxygenCobalt).** It adds a small set of features that are
+out of scope upstream. Where an issue belongs depends on what it's about — please read this
+first.
+
+## Where do I report?
+
+| What | Where |
+| --- | --- |
+| Bugs in fork-specific features (ex. the sleep timer) | **This repository's** [Issues](../../issues) |
+| Bugs in the core player (playback, library, UI, widgets, Android Auto, …) | [Upstream Issues](https://github.com/OxygenCobalt/Auxio/issues) — reproduce on official Auxio first |
+| Feature requests for the core player | [Upstream Issues](https://github.com/OxygenCobalt/Auxio/issues), after reading [Why Are These Features Missing?](https://github.com/OxygenCobalt/Auxio/wiki/Why-Are-These-Features-Missing%3F) |
+| Feature requests already declined upstream | This repository's [Issues](../../issues) — they may fit this fork |
+| Translations of the core app | The upstream [Weblate project](https://hosted.weblate.org/engage/auxio/) |
+
+**Important:** if you hit a player bug while using this fork, please reproduce it on
+[official Auxio](https://github.com/OxygenCobalt/Auxio/releases) before reporting it upstream.
+The original author should not have to debug this fork's changes.
 
 ## Crashes & Bugs
-Log them in the [Issues](https://github.com/OxygenCobalt/Auxio/issues) tab.
 
-Please keep in mind when reporting an issue:
-- **Has it been reported?** Make sure an issue for the issue is not already there.
-- **Has it been already fixed?** Make sure a fix wasn't already added.
-- **Is it still relevant in the latest version?** Make sure to test it in the latest version.
+When reporting an issue here, make sure that:
+- **It hasn't been reported already** in this repository or upstream.
+- **It's still relevant** in the latest version of this fork.
 
-If you do make an issue, Make sure to provide:
+Provide:
 - A description of the bug/crash
-- A summary of the steps to create the bug/crash
-- A stack trace/logcat if possible, the longer the better.
-
-If you have knowledge of Android/Kotlin in general, you could also go about fixing the bug yourself and opening a [Pull Request](https://github.com/OxygenCobalt/Auxio/pulls).
-
-## Feature Requests
-These should also be logged in the [Issues](https://github.com/OxygenCobalt/Auxio/issues) tab.
-
-Please keep in mind when requesting a feature:
-- **Has it already been requested?** Make sure request for this feature is not already here.
-- **Has it been already added?** Make sure this feature has not already been added in the most recent release.
-- **Will it be accepted?** Read the [Why Are These Features Missing?](https://github.com/OxygenCobalt/Auxio/wiki/Why-Are-These-Features-Missing%3F) in order to see the likelihood that your request will be implemented.
-
-If you do make a request, provide the following:
-- What is it that you want?
-- Is it related to some problem? If so, describe why.
-- Why do you think it will benefit everyone's usage of the app?
-
-If you have the knowledge, you can also implement the feature yourself and create a [Pull Request](https://github.com/OxygenCobalt/Auxio/pulls), but its recommended that **you create an issue beforehand to give me a heads up.**
-Its also recommended that you read about [Auxio's Architecture](https://github.com/OxygenCobalt/Auxio/wiki/Architecture) as well to make changes better and more efficient.
-
-## Translations
-Go to Auxio's weblate project [here](https://hosted.weblate.org/engage/auxio/).
+- A summary of the steps to reproduce it
+- A stack trace/logcat if possible, the longer the better
 
 ## Code Contributions
-If you have knowledge of Android/Kotlin, feel free to to contribute to the project.
-- If you want to help out with an existing bug report, comment on the issue that you want to fix saying that you are going to try your hand at it.
-- If you want to add something, its recommended to open up an issue for what you want to change before you start working on it. That way I can determine if the addition will be merged in the first place, and generally gives a heads-up overall.
-- Do not bring non-free software into the project, such as Binary Blobs.
-- Stick to [F-Droid Inclusion Guidelines](https://f-droid.org/wiki/page/Inclusion_Policy)
+
+Pull requests are welcome, both for fork features and for keeping the fork healthy. The
+original project's rules apply here as well:
+
+- If you want to add something, open an issue first so it can be discussed before you invest
+  time into it.
+- Do not bring non-free software into the project, such as binary blobs.
+- Stick to the [F-Droid Inclusion Guidelines](https://f-droid.org/wiki/page/Inclusion_Policy).
 - Make sure you stick to Auxio's styling, which should be auto-formatted on every build.
 - Please ***FULLY TEST*** your changes before creating a PR. Untested code will not be merged.
-- Only **Kotlin** will be accepted, except for the case that a UI component must be vendored in the project.
-- Keep your code up the date with the upstream and continue to maintain it after you create the PR. This makes it less of a hassle to merge.
+- Only **Kotlin** will be accepted, except for the case that a UI component must be vendored
+  in the project.
+- Keep your branch up to date with this repository's `dev` while the PR is open.
+
+If your change improves the *core player* rather than a fork feature, consider contributing it
+[upstream](https://github.com/OxygenCobalt/Auxio) instead — everyone benefits, including this
+fork. Reading about [Auxio's Architecture](https://github.com/OxygenCobalt/Auxio/wiki/Architecture)
+is recommended before making changes.
