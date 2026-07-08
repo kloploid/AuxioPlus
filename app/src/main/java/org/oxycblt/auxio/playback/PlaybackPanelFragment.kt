@@ -39,6 +39,7 @@ import kotlin.math.abs
 import org.oxycblt.auxio.R
 import org.oxycblt.auxio.databinding.FragmentPlaybackPanelBinding
 import org.oxycblt.auxio.detail.DetailViewModel
+import org.oxycblt.auxio.home.HomeViewModel
 import org.oxycblt.auxio.list.ListViewModel
 import org.oxycblt.auxio.music.resolve
 import org.oxycblt.auxio.music.resolveNames
@@ -78,6 +79,7 @@ class PlaybackPanelFragment :
     private val coverPagerAdapter = CoverPagerAdapter(this)
     private val playbackModel: PlaybackViewModel by activityViewModels()
     private val detailModel: DetailViewModel by activityViewModels()
+    private val homeModel: HomeViewModel by activityViewModels()
     private val listModel: ListViewModel by activityViewModels()
     private val queueModel: QueueViewModel by viewModels()
     private var equalizerLauncher: ActivityResultLauncher<Intent>? = null
@@ -173,6 +175,7 @@ class PlaybackPanelFragment :
         }
 
         // --- VIEWMODEL SETUP --
+        collectImmediately(playbackModel.sleepTimerEnabled, ::updateSleepTimerEnabled)
         collectImmediately(playbackModel.song, ::updateSong)
         collectImmediately(playbackModel.parent, ::updateParent)
         collectImmediately(playbackModel.positionDs, ::updatePosition)
@@ -229,6 +232,15 @@ class PlaybackPanelFragment :
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sleep_timer) {
+            // The playback panel is not part of a navigation graph (and it's own
+            // findNavController resolves to the inner explore graph), so outer navigation
+            // must be delegated to MainFragment.
+            L.d("Opening sleep timer dialog")
+            homeModel.showSleepTimer()
+            return true
+        }
+
         if (item.itemId == R.id.action_open_equalizer) {
             // Launch the system equalizer app, if possible.
             L.d("Launching equalizer")
@@ -269,6 +281,10 @@ class PlaybackPanelFragment :
         binding.playbackArtist.text = song.artists.resolveNames(context)
         binding.playbackAlbum?.text = song.album.name.resolve(context)
         binding.playbackSeekBar?.durationDs = song.durationMs.msToDs()
+    }
+
+    private fun updateSleepTimerEnabled(enabled: Boolean) {
+        requireBinding().playbackToolbar.setMenuItemVisible(R.id.action_sleep_timer, enabled)
     }
 
     private fun updateParent(parent: MusicParent?) {

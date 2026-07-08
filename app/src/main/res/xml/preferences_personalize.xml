@@ -17,6 +17,12 @@
             app:key="@string/set_key_bar_action"
             app:title="@string/set_bar_action" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="@string/set_key_sleep_timer_enabled"
+            app:summary="@string/set_sleep_timer_desc"
+            app:title="@string/set_sleep_timer" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/set_behavior">

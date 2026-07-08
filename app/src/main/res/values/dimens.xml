@@ -19,6 +19,8 @@
     <dimen name="size_hero_medium">192dp</dimen>
     <dimen name="size_hero_large">256dp</dimen>
 
+    <dimen name="size_sleep_timer_ring">220dp</dimen>
+
     <dimen name="size_icon_small">24dp</dimen>
     <dimen name="size_icon_medium">32dp</dimen>
     <dimen name="size_icon_large">40dp</dimen>

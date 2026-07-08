@@ -563,6 +563,7 @@ class MainFragment :
             when (outer) {
                 is Outer.Settings -> MainFragmentDirections.preferences()
                 is Outer.About -> MainFragmentDirections.about()
+                is Outer.SleepTimer -> MainFragmentDirections.sleepTimer()
                 null -> return
             }
         findNavController().navigateSafe(directions)

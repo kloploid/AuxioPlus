@@ -286,10 +286,16 @@ constructor(
     fun showAbout() {
         _showOuter.put(Outer.About)
     }
+
+    fun showSleepTimer() {
+        _showOuter.put(Outer.SleepTimer)
+    }
 }
 
 sealed interface Outer {
     data object Settings : Outer
 
     data object About : Outer
+
+    data object SleepTimer : Outer
 }

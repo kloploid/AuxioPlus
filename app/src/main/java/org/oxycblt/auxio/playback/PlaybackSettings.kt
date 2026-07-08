@@ -60,6 +60,10 @@ interface PlaybackSettings : Settings<PlaybackSettings.Listener> {
     val rememberPause: Boolean
     /** Whether to always exit when task is removed, even if playing. */
     val exitOnTaskRemoval: Boolean
+    /** The last duration used for the sleep timer, in minutes. */
+    var sleepTimerDurationMinutes: Int
+    /** Whether the sleep timer feature is enabled at all. */
+    val sleepTimerEnabled: Boolean
 
     interface Listener {
         /** Called when one of the ReplayGain configurations have changed. */
@@ -70,6 +74,9 @@ interface PlaybackSettings : Settings<PlaybackSettings.Listener> {
 
         /** Called when [pauseOnRepeat] has changed. */
         fun onPauseOnRepeatChanged() {}
+
+        /** Called when [sleepTimerEnabled] has changed. */
+        fun onSleepTimerEnabledChanged() {}
     }
 }
 
@@ -137,6 +144,23 @@ class PlaybackSettingsImpl @Inject constructor(@ApplicationContext context: Cont
     override val exitOnTaskRemoval: Boolean
         get() = sharedPreferences.getBoolean(getString(R.string.set_key_task_exit), false)
 
+    override val sleepTimerEnabled: Boolean
+        get() =
+            sharedPreferences.getBoolean(getString(R.string.set_key_sleep_timer_enabled), true)
+
+    override var sleepTimerDurationMinutes: Int
+        get() =
+            sharedPreferences.getInt(
+                getString(R.string.set_key_sleep_timer_duration),
+                DEFAULT_SLEEP_TIMER_MINUTES,
+            )
+        set(value) {
+            sharedPreferences.edit {
+                putInt(getString(R.string.set_key_sleep_timer_duration), value)
+                apply()
+            }
+        }
+
     override fun migrate() {
         // MusicMode was converted to PlaySong in 3.2.0
         fun Int.migrateMusicMode() =
@@ -201,11 +225,16 @@ class PlaybackSettingsImpl @Inject constructor(@ApplicationContext context: Cont
                 L.d("Dispatching pause on repeat change")
                 listener.onPauseOnRepeatChanged()
             }
+            getString(R.string.set_key_sleep_timer_enabled) -> {
+                L.d("Dispatching sleep timer enabled change")
+                listener.onSleepTimerEnabledChanged()
+            }
         }
     }
 
     private companion object {
         const val OLD_KEY_LIB_MUSIC_PLAYBACK_MODE = "auxio_library_playback_mode"
         const val OLD_KEY_DETAIL_MUSIC_PLAYBACK_MODE = "auxio_detail_playback_mode"
+        const val DEFAULT_SLEEP_TIMER_MINUTES = 30
     }
 }

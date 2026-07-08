@@ -16,6 +16,9 @@
         <action
             android:id="@+id/about"
             app:destination="@id/about_fragment" />
+        <action
+            android:id="@+id/sleep_timer"
+            app:destination="@id/sleep_timer_dialog" />
     </fragment>
     <fragment
         android:id="@+id/root_preferences_fragment"
@@ -94,6 +97,11 @@
         android:name="org.oxycblt.auxio.music.locations.LocationsDialog"
         android:label="music_locations_dialog"
         tools:layout="@layout/dialog_music_locations" />
+    <dialog
+        android:id="@+id/sleep_timer_dialog"
+        android:name="org.oxycblt.auxio.playback.timer.SleepTimerDialog"
+        android:label="sleep_timer_dialog"
+        tools:layout="@layout/dialog_sleep_timer" />
     <dialog
         android:id="@+id/separators_dialog"
         android:name="org.oxycblt.auxio.music.interpret.SeparatorsDialog"

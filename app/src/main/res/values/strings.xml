@@ -119,6 +119,9 @@
 
     <string name="lbl_playback">Now playing</string>
     <string name="lbl_equalizer">Equalizer</string>
+    <string name="lbl_sleep_timer">Sleep timer</string>
+    <string name="lbl_minutes">Minutes</string>
+    <string name="lbl_sleep_timer_custom">Custom duration (minutes)</string>
     <string name="lbl_play">Play</string>
     <string name="lbl_shuffle">Shuffle</string>
 
@@ -153,6 +156,10 @@
 
     <string name="lbl_ok">OK</string>
     <string name="lbl_cancel">Cancel</string>
+    <!-- As in to start the sleep timer -->
+    <string name="lbl_start">Start</string>
+    <!-- As in to stop the running sleep timer -->
+    <string name="lbl_stop">Stop</string>
     <!-- As in to save a setting -->
     <string name="lbl_save">Save</string>
     <!-- as in to reset to a default setting -->
@@ -195,6 +202,7 @@
     <string name="lng_widget">View and control music playback</string>
     <string name="lng_indexing">Loading your music library…</string>
     <string name="lng_observing">Monitoring your music library for changes…</string>
+    <string name="lng_sleep_timer">Playback will pause when the timer ends</string>
     <string name="lng_queue_added">Added to queue</string>
     <string name="lng_play_next">Song will play next</string>
     <string name="lng_playlist_created">Playlist created</string>
@@ -248,6 +256,8 @@
     <string name="set_bar_action">Custom playback bar action</string>
     <string name="set_action_mode_next">Skip to next</string>
     <string name="set_action_mode_repeat">Repeat mode</string>
+    <string name="set_sleep_timer">Sleep timer</string>
+    <string name="set_sleep_timer_desc">Show a sleep timer button on the playback screen</string>
     <string name="set_behavior">Behavior</string>
     <string name="set_play_in_list_with">When playing from the library</string>
     <string name="set_play_in_parent_with">When playing from item details</string>

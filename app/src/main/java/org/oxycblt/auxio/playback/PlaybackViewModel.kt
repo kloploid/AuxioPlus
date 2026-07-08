@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import org.oxycblt.auxio.list.ListSettings
 import org.oxycblt.auxio.list.adapter.UpdateInstructions
 import org.oxycblt.auxio.playback.state.DeferredPlayback
+import org.oxycblt.auxio.playback.timer.SleepTimer
 import org.oxycblt.auxio.playback.state.PlaybackCommand
 import org.oxycblt.auxio.playback.state.PlaybackStateManager
 import org.oxycblt.auxio.playback.state.Progression
@@ -61,6 +62,7 @@ constructor(
     private val playbackSettings: PlaybackSettings,
     private val commandFactory: PlaybackCommand.Factory,
     private val listSettings: ListSettings,
+    private val sleepTimer: SleepTimer,
 ) : ViewModel(), PlaybackStateManager.Listener, PlaybackSettings.Listener {
     private var lastPositionJob: Job? = null
 
@@ -127,6 +129,22 @@ constructor(
      */
     val currentAudioSessionId: Int?
         get() = playbackManager.currentAudioSessionId
+
+    /**
+     * Time left until the sleep timer pauses playback, in milliseconds. Null if no sleep timer is
+     * currently running.
+     */
+    val sleepTimerRemainingMs: StateFlow<Long?>
+        get() = sleepTimer.remainingMs
+
+    /** The duration last used for the sleep timer, in minutes. */
+    val lastSleepTimerDurationMinutes: Int
+        get() = playbackSettings.sleepTimerDurationMinutes
+
+    private val _sleepTimerEnabled = MutableStateFlow(playbackSettings.sleepTimerEnabled)
+    /** Whether the sleep timer feature is enabled at all. */
+    val sleepTimerEnabled: StateFlow<Boolean>
+        get() = _sleepTimerEnabled
 
     init {
         playbackManager.addListener(this)
@@ -210,6 +228,16 @@ constructor(
 
     override fun onBarActionChanged() {
         _currentBarAction.value = playbackSettings.barAction
+    }
+
+    override fun onSleepTimerEnabledChanged() {
+        val enabled = playbackSettings.sleepTimerEnabled
+        _sleepTimerEnabled.value = enabled
+        if (!enabled) {
+            // Disabling the feature makes any running timer un-cancellable from the UI, so
+            // it cannot be left around.
+            sleepTimer.cancel()
+        }
     }
 
     // --- PLAYING FUNCTIONS ---
@@ -631,6 +659,25 @@ constructor(
     fun toggleRepeatMode() {
         L.d("Toggling repeat mode")
         playbackManager.repeatMode(playbackManager.repeatMode.increment())
+    }
+
+    /**
+     * Start a sleep timer that will pause playback after the given duration, replacing any timer
+     * that is already running. The duration is remembered and used as the initial choice the next
+     * time a timer is configured.
+     *
+     * @param durationMinutes How long to play before pausing, in minutes.
+     */
+    fun startSleepTimer(durationMinutes: Int) {
+        L.d("Starting sleep timer for ${durationMinutes}min")
+        playbackSettings.sleepTimerDurationMinutes = durationMinutes
+        sleepTimer.start(durationMinutes * 60_000L)
+    }
+
+    /** Cancel the currently running sleep timer, if any. */
+    fun cancelSleepTimer() {
+        L.d("Cancelling sleep timer")
+        sleepTimer.cancel()
     }
 
     // --- UI CONTROL ---

@@ -67,6 +67,7 @@ constructor(
     private var overflowClickListener: OnClickListener? = null
     private val actionButtons = mutableMapOf<Int, RippleFixMaterialButton>()
     @SuppressLint("RestrictedApi") private var menuBuilder = MenuBuilder(context)
+    private var titleCentered = false
 
     init {
         inflatingLayout = true
@@ -97,7 +98,7 @@ constructor(
         val materialToolbarAttrs =
             context.obtainStyledAttributes(attrs, MR.styleable.MaterialToolbar, defStyleAttr, 0)
 
-        val titleCentered =
+        titleCentered =
             materialToolbarAttrs.getBoolean(MR.styleable.MaterialToolbar_titleCentered, false)
         binding.toolbarTitle.apply {
             text = toolbarAttrs.getText(AR.styleable.Toolbar_title)
@@ -174,6 +175,28 @@ constructor(
         super.onFinishInflate()
     }
 
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        if (!titleCentered) return
+        // The title is centered within the space left over by the navigation button and the
+        // action buttons. When those sides differ in width (ex. one navigation button vs. two
+        // action buttons), the center of that space no longer matches the center of the
+        // toolbar. Compensate by padding the title area on it's smaller side so that a
+        // centered title lines up with the true center. Padding over translation so that
+        // long text still ellipsizes without running into the buttons.
+        val frame = binding.toolbarContentFrame
+        val occupiedLeft = frame.left
+        val occupiedRight = binding.toolbarRoot.width - frame.right
+        val delta = occupiedRight - occupiedLeft
+        val padLeft = maxOf(delta, 0)
+        val padRight = maxOf(-delta, 0)
+        if (frame.paddingLeft != padLeft || frame.paddingRight != padRight) {
+            // Schedules another layout pass, which will converge as the padding does not
+            // change the size of either side.
+            frame.setPadding(padLeft, frame.paddingTop, padRight, frame.paddingBottom)
+        }
+    }
+
     var title: CharSequence?
         get() = binding.toolbarTitle.text
         set(value) {
@@ -213,6 +236,15 @@ constructor(
     fun setMenuItemEnabled(itemId: Int, enabled: Boolean) {
         menuBuilder.findItem(itemId)?.isEnabled = enabled
         getMenuButton(itemId)?.isEnabled = enabled
+    }
+
+    @SuppressLint("RestrictedApi")
+    fun setMenuItemVisible(itemId: Int, visible: Boolean) {
+        val item = menuBuilder.findItem(itemId) ?: return
+        if (item.isVisible != visible) {
+            item.isVisible = visible
+            rebuildActionButtons()
+        }
     }
 
     val titleContainer: View

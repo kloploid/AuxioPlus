@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Disables the M3 expressive "squish" morph that widens a pressed button at the expense
+    of its neighbors, which makes toolbar action buttons visibly displace each other.
+-->
+<selector xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item app:widthChange="0%" />
+</selector>
