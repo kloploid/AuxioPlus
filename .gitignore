@@ -16,3 +16,8 @@ captures/
 .kotlin
 .aider*
 .env
+
+# Release signing (fork)
+keystore.properties
+*.jks
+dist/

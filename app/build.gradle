@@ -15,8 +15,10 @@ android {
     namespace "org.oxycblt.auxio"
 
     defaultConfig {
-        applicationId namespace
-        versionName "4.1.2"
+        // Different from the namespace so that this fork can be installed alongside
+        // official Auxio.
+        applicationId "org.oxycblt.auxio.plus"
+        versionName "4.1.2-plus.1"
         versionCode 72
 
         minSdk min_sdk
@@ -40,6 +42,26 @@ android {
         }
     }
 
+    // Release signing is configured through an untracked keystore.properties at the repo
+    // root. When the file is absent (ex. CI or a fresh checkout), the release build stays
+    // unsigned, same as upstream.
+    def keystoreProps = new Properties()
+    def keystorePropsFile = rootProject.file("keystore.properties")
+    if (keystorePropsFile.exists()) {
+        keystorePropsFile.withInputStream { keystoreProps.load(it) }
+    }
+
+    signingConfigs {
+        if (keystorePropsFile.exists()) {
+            release {
+                storeFile file(keystoreProps["storeFile"])
+                storePassword keystoreProps["storePassword"]
+                keyAlias keystoreProps["keyAlias"]
+                keyPassword keystoreProps["keyPassword"]
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
@@ -50,6 +72,9 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            if (keystorePropsFile.exists()) {
+                signingConfig signingConfigs.release
+            }
 
             dependenciesInfo {
                 includeInApk = false
